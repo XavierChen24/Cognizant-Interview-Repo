@@ -4,7 +4,7 @@ db.createUser({
   roles: [
     {
       role: "readWrite",
-      db: "mern_docker_starter",
+      db: "library_pod",
     },
   ],
 });
