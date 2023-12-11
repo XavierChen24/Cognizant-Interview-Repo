@@ -1,7 +1,7 @@
 version: "3"
 services:
   mongo:
-    container_name: mongo-mern-docker-boilerplate
+    container_name: mongo-library_pod
     image: mongo
     restart: always
     ports:
@@ -17,7 +17,7 @@ services:
       - MONGO_INITDB_PASSWORD=Password123
 
   backend:
-    container_name: node-mern-docker-boilerplate
+    container_name: node-library_pod
     build:
       context: ./backend
       dockerfile: docker-setup/node/development/Dockerfile
@@ -36,9 +36,10 @@ services:
       - mongo
     ports:
       - "5000:4000"
+      - "9229:9229"
 
   frontend:
-    container_name: react-mern-docker-boilerplate
+    container_name: react-library_pod
     build:
       context: ./frontend
       dockerfile: docker-setup/react/development/Dockerfile
@@ -57,6 +58,6 @@ services:
 
 networks:
   default:
-    name: backend-network-mern-docker-boilerplate
+    name: backend-network-library_pod
   frontend:
-    name: frontend-network-mern-docker-boilerplate
+    name: frontend-network-library_pod

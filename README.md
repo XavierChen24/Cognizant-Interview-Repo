@@ -26,7 +26,7 @@ http://localhost:3000
 ```
 Host: localhost
 Port: 27018
-Database Name: mern_docker_starter
+Database Name: library_pod
 Database User: local_user
 Database Password: Password123
 ```

@@ -24,15 +24,17 @@ app.use(
     saveUninitialized: true,
   })
 );
-app.use(passport.initialize());
-app.use(passport.session());
-require("./config/passport")(passport);
+
 app.use(infoLogger);
 app.use(rateLimiter);
 
 const users_route = require("./routes/user");
 
 app.use("/user", users_route);
+
+app.get("/", (req, res) => {
+  res.send("Hello world!");
+});
 
 // default case for unmatched routes
 app.use(function (req, res) {
