@@ -1,7 +1,7 @@
 version: "3"
 services:
   mongo:
-    container_name: mongo-library_pod
+    container_name: mongo-library-pod
     image: mongo
     restart: always
     ports:
@@ -17,7 +17,7 @@ services:
       - MONGO_INITDB_PASSWORD=Password123
 
   backend:
-    container_name: node-library_pod
+    container_name: node-library-pod
     build:
       context: ./backend
       dockerfile: docker-setup/node/production/Dockerfile
@@ -36,7 +36,7 @@ services:
       - "4000"
 
   frontend:
-    container_name: react-library_pod
+    container_name: react-library-pod
     build:
       context: ./frontend
       dockerfile: docker-setup/react/production/Dockerfile
@@ -54,6 +54,6 @@ services:
 
 networks:
   default:
-    name: backend-network-library_pod
+    name: backend-network-library-pod
   frontend:
-    name: frontend-network-library_pod
+    name: frontend-network-library-pod
