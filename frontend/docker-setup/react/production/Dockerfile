@@ -39,7 +39,7 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY --from=frontend /frontend/build .
 
 # Update the nginx config with our own config file
-COPY --from=frontend /frontend/docker-setup/nginx/mern-template.conf /etc/nginx/conf.d/
+COPY --from=frontend /frontend/docker-setup/nginx/library-template.conf /etc/nginx/conf.d/
 
 EXPOSE 80
 
