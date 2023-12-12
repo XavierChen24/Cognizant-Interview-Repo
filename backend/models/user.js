@@ -13,20 +13,21 @@ const userSchema = mongoose.Schema({
   },
   bookings: {
     type: Schema.Types.ObjectId,
-    ref: "booking",
+    ref: "Reservation",
   },
 });
 
 const User = (module.exports = mongoose.model("User", userSchema));
 
-module.exports.getUserByNirc = function (id, callback) {
-  User.findById({ _id: nirc }, callback);
+module.exports.getUserByNirc = function (nirc, callback) {
+  User.findById({ nirc: nirc }, callback);
 };
 
 module.exports.addUser = function (newUser, callback) {
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(newUser.nirc, salt, (err, hash) => {
       if (err) throw err;
+      newUser._id = hash;
       newUser.nirc = hash;
       newUser.save(callback);
     });

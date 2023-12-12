@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const bookingSchema = mongoose.Schema({
+const reservationSchema = mongoose.Schema({
   podNumber: {
     type: Number,
     required: true,
@@ -19,12 +19,13 @@ const bookingSchema = mongoose.Schema({
     type: Date,
     required: true
   },
-  durationOfBooking: {
+  duration: {
     type: Number,
     required: true,
-    min: 0,
-    max: 3
+    min: 1,
+    max: 4
   }
 });
 
-const Booking = (module.exports = mongoose.model("Booking", bookingSchema));
+const Reservation = (module.exports = mongoose.model("Reservation", reservationSchema));
+
