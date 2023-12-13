@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
+import BookingForm from "./pages/Booking/Booking";
+import Acknowledgement from "./pages/Acknowledgement/Acknowledgement";
+import Home from "./pages/Home/Home"
+import PageNotFound from "./pages/PageNotFound/PageNotFound"
+import Reservation from "./pages/Reservation/Reservation";
 
-function App() {
+const App = () => {
+  const [bookingDetails, setBookingDetails] = useState(null);
+
+  const handleBookingSubmission = (details) => {
+    // Handle submission logic (e.g., send data to server)
+    // For now, just set the details to state
+    setBookingDetails(details);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Routes>
+        {/* <Route path="/" element={<Layout bookingDetails={bookingDetails} />}> */}
+        <Route index element={<Home/>} />
+        <Route path="acknowledgement" element={<Acknowledgement/>}/>
+        <Route path="booking" element={<BookingForm/>}/>
+        <Route path="reservation" element={<Reservation/>}/>
+        <Route path="404" element={<PageNotFound/>} />
+      </Routes>
   );
-}
+};
 
 export default App;
