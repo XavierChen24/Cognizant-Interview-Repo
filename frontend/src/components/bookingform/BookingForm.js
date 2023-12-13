@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
 import generateTimings from "./Helper";
+import validator from "validator";
+import axios from "../../api/axios";
+import { getDayListingRoute } from "../../api/routes";
+import { toast } from "react-toastify";
 export default function Example() {
   //TODO: Move constants to config file
   const podNumbers = {
@@ -38,34 +42,96 @@ export default function Example() {
     },
   };
 
+  const openingHours = generateTimings(12, 20);
+
   const bookingDuration = ["30 mins", "1 hour", "1.5 hour", "2 hours"];
 
   const [value, setValue] = useState({
     fullName: null,
     nirc: null,
     podNumber: null,
-    podLocation: null,
     startDate: null,
     bookingTimings: null,
     bookingDuration: null,
   });
 
+  const [datePickerValue, setDatePicker] = useState({
+    startDate: null,
+    endDate: null,
+  });
+
+  const [fullNameError, setFullNameError] = useState("");
+  const [nircError, setNircError] = useState("");
+  const [startDateError, setStartDateError] = useState("");
+  const [formValid, setFormValid] = useState(false);
+
   const changeHandler = (e) => {
     setValue({ ...value, [e.target.name]: e.target.value });
-    console.log(value);
   };
 
   const handleDatePicker = (newValue) => {
     setValue({ ...value, startDate: newValue.startDate });
-    console.log(value);
+    setDatePicker(newValue);
   };
 
   const podList = Object.keys(podNumbers);
 
-  const openingHours = generateTimings(12, 20);
+  const handleValidation = () => {
+    let formIsValid = true;
+
+    if (
+      !validator.isAlpha(value.fullName) &&
+      !validator.isLength(value.fullName, { min: 5 })
+    ) {
+      formIsValid = false;
+      setFullNameError("Fullname cannot contain numbers or special characters");
+      return false;
+    } else {
+      setFullNameError("");
+      formIsValid = true;
+    }
+
+    if (!validator.whitelist(value.nirc, "^[STFG]d{7}[A-Z]$")) {
+      formIsValid = false;
+      setNircError("Invalid NIRC. Use Capital Only!");
+      return false;
+    } else {
+      setNircError("");
+      formIsValid = true;
+    }
+
+    if (!validator.whitelist(value.startDate, "^\\d{4}-\\d{2}-\\d{2}$")) {
+      formIsValid = false;
+      setStartDateError("Invalid Start Date Format");
+      return false;
+    } else {
+      setStartDateError("");
+      formIsValid = true;
+    }
+
+    setFormValid(formIsValid);
+  };
+
+  async function bookingSubmit(e) {
+    console.log(value);
+    e.preventDefault();
+    console.log(formValid)
+    handleValidation();
+    console.log(formValid)
+    if (formValid) {
+      try {
+        //TODO: Must finish the axio function in backend and return to frontend to handle the response
+        let response = await axios.post(getDayListingRoute, value);
+        console.log("request sent");
+      } catch (error) {
+        toast.error(error.response.data.msg);
+      }
+    }
+    console.log("4")
+  }
 
   return (
-    <form>
+    <form onSubmit={bookingSubmit} className="booking-form">
       <div className="gap-16 items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
@@ -86,7 +152,7 @@ export default function Example() {
               {/* Start of Input Field for Fullname*/}
               <div className="sm:col-span-4">
                 <label
-                  htmlFor="fullname"
+                  htmlFor="fullName"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Full Name
@@ -96,11 +162,12 @@ export default function Example() {
                     <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm"></span>
                     <input
                       type="text"
-                      name="fullname"
-                      id="fullname"
-                      autoComplete="fullname"
+                      name="fullName"
+                      id="fullName"
+                      autoComplete="fullName"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder="MARY TAN XIAO HUA"
+                      required
                       onChange={changeHandler}
                     />
                   </div>
@@ -124,6 +191,7 @@ export default function Example() {
                       autoComplete="nirc"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder="SxxxxxxxxA / TxxxxxxxxA"
+                      required
                       onChange={changeHandler}
                     />
                   </div>
@@ -146,7 +214,7 @@ export default function Example() {
                     onChange={changeHandler}
                   >
                     {podList.map((pod, key) => (
-                      <option key={key} value={pod.value}>
+                      <option key={pod} value={pod.value}>
                         {pod}
                       </option>
                     ))}
@@ -171,6 +239,7 @@ export default function Example() {
                       id="podLocation"
                       autoComplete="podLocation"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      required
                       value={
                         podNumbers[
                           value.podNumber || Object.keys(podNumbers)[0]
@@ -182,10 +251,7 @@ export default function Example() {
               </div>
               {/* Start of Date Picker */}
               <div className="sm:col-span-4">
-                <label
-                  htmlFor="startDate"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
+                <label className="block text-sm font-medium leading-6 text-gray-900">
                   Booking Date
                 </label>
                 <div className="mt-2">
@@ -202,10 +268,11 @@ export default function Example() {
                       </svg>
                     </div>
                     <Datepicker
+                      required
                       id="startDate"
                       name="startDate"
                       asSingle={true}
-                      value={value}
+                      value={datePickerValue}
                       onChange={handleDatePicker}
                     />
                   </div>
@@ -263,6 +330,7 @@ export default function Example() {
                   </select>
                 </div>
               </div>
+              {/* Start of Submit Button */}
               <div className="sm:col-span-3">
                 <div className="mt-6 flex items-right gap-x-6">
                   <button

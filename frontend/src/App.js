@@ -17,7 +17,6 @@ const App = () => {
 
   return (
       <Routes>
-        {/* <Route path="/" element={<Layout bookingDetails={bookingDetails} />}> */}
         <Route index element={<Home/>} />
         <Route path="acknowledgement" element={<Acknowledgement/>}/>
         <Route path="booking" element={<BookingForm/>}/>
