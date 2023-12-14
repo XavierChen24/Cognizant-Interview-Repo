@@ -28,9 +28,9 @@ app.use(
 app.use(infoLogger);
 app.use(rateLimiter);
 
-const users_route = require("./routes/user");
+const reservation_route = require("./routes/reservation")
 
-app.use("/user", users_route);
+app.use("/reservation", reservation_route)
 
 app.get("/", (req, res) => {
   res.send("Hello world!");

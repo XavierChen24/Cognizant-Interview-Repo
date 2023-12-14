@@ -3,7 +3,7 @@ import Datepicker from "react-tailwindcss-datepicker";
 import generateTimings from "./Helper";
 import validator from "validator";
 import axios from "../../api/axios";
-import { getDayListingRoute } from "../../api/routes";
+import { makeReservationRoute } from "../../api/routes";
 import { toast } from "react-toastify";
 export default function Example() {
   //TODO: Move constants to config file
@@ -121,13 +121,13 @@ export default function Example() {
     if (formValid) {
       try {
         //TODO: Must finish the axio function in backend and return to frontend to handle the response
-        let response = await axios.post(getDayListingRoute, value);
+        let response = await axios.post(makeReservationRoute, value);
+
         console.log("request sent");
       } catch (error) {
         toast.error(error.response.data.msg);
       }
     }
-    console.log("4")
   }
 
   return (
