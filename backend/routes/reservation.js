@@ -9,16 +9,16 @@ const Joi = require("joi");
 const Reservation = require("../models/reservation");
 router.post(
   "/new",
-  // params_validator.validateParams({
-  //   bookingDuration: Joi.number().required(), //0.5h,1h,1.5h,2h
-  //   bookingTimings: Joi.string().regex(
-  //     "/^(1[0-2]|0?[1-9]):[0-5][0-9] (AM|PM)$/i"
-  //   ).required(),
-  //   fullName: Joi.string().regex("^[a-z ,.'-]+$").required(),
-  //   nirc: Joi.string().regex("^[STFG]d{7}[A-Z]$").required(),
-  //   podNumber: Joi.string().regex("/^[D]*[0-9]+[D]*$/i").required(),
-  //   startDate: Joi.string().regex("^\\d{4}-\\d{2}-\\d{2}$").required(),
-  // }),
+  params_validator.validateParams({
+    bookingDuration: Joi.number().required(), //0.5h,1h,1.5h,2h
+    bookingTimings: Joi.string()
+      .required()
+      .regex(/^(1[0-2]|0?[1-9]):[0-5][0-9] (AM|PM)$/i),
+    fullName: Joi.string().required().regex(/^[a-z ,.'-]+$/),
+    nirc: Joi.string().required().regex(/^[STFG]d{7}[A-Z]$/),
+    podNumber: Joi.string().required().regex(/^[D]*[0-9]+[D]*$/i),
+    startDate: Joi.string().required().regex(/^\\d{4}-\\d{2}-\\d{2}$/),
+  }),
   async (req, res, next) => {
     try {
       let newReservation = {
@@ -33,7 +33,7 @@ router.post(
       console.log(response);
       res.status(200).json(response);
     } catch (e) {
-      console.log()
+      console.log();
       res.status(500).json(e);
     }
   }
