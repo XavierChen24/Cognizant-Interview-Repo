@@ -116,7 +116,6 @@ export default function BookingForm() {
     let updateAvailableTimings = async () => {
       if (value.podNumber && value.startDate) {
         let resp = await fetchAvailableTimings();
-        console.log(resp);
         setOpeningHours(resp);
       }
     };
@@ -125,14 +124,12 @@ export default function BookingForm() {
 
   async function fetchAvailableTimings() {
     try {
-      console.log("inside fetchavailabletiming function");
       if (value.podNumber != null && value.startDate != null) {
         let reqBody = {
           podNumber: value.podNumber,
           startDate: value.startDate,
         };
         let response = await axios.post(getReservationRoute, reqBody);
-        console.log(response);
         if (response.status === 200) {
           return response.data.timings;
         }
@@ -148,13 +145,11 @@ export default function BookingForm() {
   async function bookingSubmit(e) {
     e.preventDefault();
     handleValidation();
-    console.log(formValid);
     if (formValid) {
       try {
         //TODO: Must finish the axio function in backend and return to frontend to handle the response
         let response = await axios.post(makeReservationRoute, value);
         if (response.status === 200) {
-          console.log(value)
           setSubmit(true);
         }
       } catch (error) {
