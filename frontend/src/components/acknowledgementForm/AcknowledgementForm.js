@@ -1,12 +1,14 @@
-
-const {generateEndTime} = require("../../components/bookingform/Helper");
-
 const AcknowledgementForm = (reservation) => {
   let booking = reservation.reservation;
-  const duration = { 0: "30 Minutes", 1: "1 Hour", 2: "1 Hour 30 Minutes", 3: "2 Hours" };
+  const duration = {
+    0: "30 Minutes",
+    1: "1 Hour",
+    2: "1 Hour 30 Minutes",
+    3: "2 Hours",
+  };
 
   return (
-    <div>
+    <div className="gap-16 items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
       <div>
         <div class="px-4 sm:px-0">
           <h3 class="text-base font-semibold leading-7 text-gray-900">

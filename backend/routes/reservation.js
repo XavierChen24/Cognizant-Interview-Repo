@@ -1,13 +1,11 @@
 const express = require("express");
 const router = express.Router();
-
-const params_validator = require("../helpers/params-validator");
-const { errorLogger } = require("../helpers/logger");
-
 const Joi = require("joi");
 
+const params_validator = require("../helpers/params-validator");
 const Reservation = require("../models/reservation");
 const Inventory = require("../models/inventory");
+
 router.post(
   "/new",
   params_validator.validateParams({
@@ -52,6 +50,7 @@ router.post(
     }
   }
 );
+
 router.post(
   "/fetchTimings",
   params_validator.validateParams({

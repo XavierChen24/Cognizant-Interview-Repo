@@ -1,9 +1,6 @@
-import { Fragment, useState } from "react";
-import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
-import {
-  Bars3Icon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { useState } from "react";
+import { Dialog, Popover } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -43,12 +40,6 @@ export default function Header() {
             className="text-sm font-semibold leading-6 text-gray-900"
           >
             Booking Form
-          </a>
-          <a
-            href="/reservation"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Reservation
           </a>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end"></div>
@@ -93,12 +84,6 @@ export default function Header() {
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Booking Form
-                </a>
-                <a
-                  href="/reservation"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Reservation
                 </a>
               </div>
             </div>

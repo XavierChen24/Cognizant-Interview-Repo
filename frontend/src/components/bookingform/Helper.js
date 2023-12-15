@@ -1,4 +1,3 @@
-const moment = require("moment");
 /**
  * /Sets the start and end time of the pod booking and return an array of timings
  * @param {int} startTime //in 24h time
