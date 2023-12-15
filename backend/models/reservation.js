@@ -34,16 +34,12 @@ const Reservation = (module.exports = mongoose.model(
 ));
 
 module.exports.addReservation = async function (newReservation) {
-  try{
-    let resp = await Reservation.create(newReservation)
-    console.log(resp)
+  try {
+    let resp = await Reservation.create(newReservation);
     return resp;
-  }catch(e){
-    console.log(e)
-    return e
+  } catch (err) {
+    throw err;
   }
-
-
 };
 
 module.exports.getReservationById = function (newReservation, callback) {
