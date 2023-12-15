@@ -9,9 +9,6 @@ const cors = require("cors");
 const passport = require("passport");
 const helmet = require("helmet");
 
-const { infoLogger } = require("./helpers/logger");
-const { rateLimiter } = require("./helpers/rate-limiter");
-
 const app = express();
 
 app.use(helmet());
@@ -24,9 +21,6 @@ app.use(
     saveUninitialized: true,
   })
 );
-
-app.use(infoLogger);
-app.use(rateLimiter);
 
 const reservation_route = require("./routes/reservation")
 

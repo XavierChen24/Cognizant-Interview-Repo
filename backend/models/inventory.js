@@ -83,6 +83,7 @@ module.exports.fetchTimings = async function (booking) {
       podNumber: booking.podNumber,
       dateOfBooking: booking.dateOfBooking,
     });
+    console.log("inside fetchTiming")
     console.log(existing)
     if (existing == null) {
       resp = generateTimings(
