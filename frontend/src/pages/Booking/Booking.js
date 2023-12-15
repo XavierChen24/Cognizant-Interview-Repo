@@ -6,7 +6,7 @@ function Booking() {
   return (
     <div>
       <Header/>
-      <BookingForm/>
+      <BookingForm />
       <Footer/>
     </div>
   );

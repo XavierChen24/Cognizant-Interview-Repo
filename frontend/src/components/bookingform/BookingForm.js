@@ -3,9 +3,11 @@ import Datepicker from "react-tailwindcss-datepicker";
 import generateTimings from "./Helper";
 import validator from "validator";
 import axios from "../../api/axios";
-import { makeReservationRoute } from "../../api/routes";
+import { makeReservationRoute, getReservationRoute } from "../../api/routes";
 import { toast } from "react-toastify";
-export default function Example() {
+import { useNavigate } from "react-router-dom";
+
+export default function BookingForm() {
   //TODO: Move constants to config file
   const podNumbers = {
     "Pod 1": {
@@ -42,14 +44,14 @@ export default function Example() {
     },
   };
 
-  const openingHours = generateTimings(12, 20);
+  const [openingHours, setOpeningHours] = useState([]);
 
   const bookingDuration = ["30 mins", "1 hour", "1.5 hour", "2 hours"];
 
   const [value, setValue] = useState({
     fullName: null,
     nirc: null,
-    podNumber: null,
+    podNumber: "Pod 1",
     startDate: null,
     bookingTimings: null,
     bookingDuration: null,
@@ -72,6 +74,7 @@ export default function Example() {
   const handleDatePicker = (newValue) => {
     setValue({ ...value, startDate: newValue.startDate });
     setDatePicker(newValue);
+    fetchAvailableTimings();
   };
 
   const podList = Object.keys(podNumbers);
@@ -112,21 +115,45 @@ export default function Example() {
     setFormValid(formIsValid);
   };
 
+  const navigate = useNavigate();
+
+  const toAcknowledgementPage = (response) => {
+    navigate("/acknowledgement", { state: response });
+  };
+
   async function bookingSubmit(e) {
-    console.log(value);
     e.preventDefault();
-    console.log(formValid)
     handleValidation();
-    console.log(formValid)
+    console.log(formValid);
     if (formValid) {
       try {
         //TODO: Must finish the axio function in backend and return to frontend to handle the response
         let response = await axios.post(makeReservationRoute, value);
-
-        console.log("request sent");
+        if (response.success) {
+          toAcknowledgementPage(response);
+        }
       } catch (error) {
-        toast.error(error.response.data.msg);
+        console.log(error);
+        toast.error(error.message);
       }
+    }
+  }
+
+  async function fetchAvailableTimings() {
+    try {
+      if (value.podNumber != null && value.startDate != null) {
+        let reqBody = {
+          podNumber: value.podNumber,
+          startDate: value.startDate,
+        };
+        let response = await axios.post(getReservationRoute, reqBody);
+        if (response.success) {
+          setOpeningHours(response.timings);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
     }
   }
 

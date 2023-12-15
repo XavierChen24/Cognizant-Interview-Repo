@@ -43,6 +43,7 @@ router.post(
       );
       let inventoryResponse = await Inventory.newPodBooking(newReservation);
       res.status(200).json({
+        success: true,
         reservation: reservationResponse,
         inventoryResponse: inventoryResponse,
       });
